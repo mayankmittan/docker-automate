@@ -16,9 +16,9 @@ steps {
 
 git branch: 'main',
 
-credentialsId:'b0965fcc-041a-49ba-ba0b-9fea1c28df2d',
+credentialsId:'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',
 
-url: 'https://github.com/mittanmayank/done.git'
+url: 'https://github.com/mittanmayank/sonartest.git'
 
 sh 'echo Git Checkout complete'
 
@@ -38,7 +38,27 @@ sh 'echo compile completed'
 
 }
 
-
+stage('Sonar Analysis') {
+environment {
+SCANNER_HOME = tool 'sonar'
+PROJECT_NAME = "test"
+}
+steps {
+withSonarQubeEnv('sonar') {
+sh '''$SCANNER_HOME/bin/sonar-scanner \
+-Dsonar.java.binaries=build/classes/java/ \
+-Dsonar.projectKey=$PROJECT_NAME \
+-Dsonar.sources=.'''
+}
+}
+}
+stage('Quality Gate') {
+steps {
+timeout(time: 1, unit: 'MINUTES') {
+waitForQualityGate abortPipeline:true
+}
+}
+}
 
 stage('package') {
 
