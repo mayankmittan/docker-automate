@@ -44,7 +44,7 @@ SCANNER_HOME = tool 'sonar'
 PROJECT_NAME = "test"
 }
 steps {
-withSonarQubeEnv('sonar') {
+withSonarQubeEnv('my_sonar') {
 sh '''$SCANNER_HOME/bin/sonar-scanner \
 -Dsonar.java.binaries=build/classes/java/ \
 -Dsonar.projectKey=$PROJECT_NAME \
