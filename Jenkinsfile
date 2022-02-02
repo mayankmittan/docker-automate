@@ -32,42 +32,11 @@ steps {
 
 sh 'mvn clean install'
 
-sh 'echo compile completed'
 
 }
 
 }
-stage('Unit test') {
-
-steps {
-
-sh 'mvn test'
-
-}
-
-}
-stage('Sonar Analysis') {
-environment {
-SCANNER_HOME = tool 'sonar'
-PROJECT_NAME = "test"
-}
-steps {
-withSonarQubeEnv('my_sonar') {
-sh '''$SCANNER_HOME/bin/sonar-scanner \
--Dsonar.java.binaries=build/classes/java/ \
--Dsonar.projectKey=$PROJECT_NAME \
--Dsonar.sources=.'''
-}
-}
-}
-stage('Quality Gate') {
-steps {
-timeout(time: 1, unit: 'MINUTES') {
-waitForQualityGate abortPipeline:true
-}
-}
-}
-
+  
 stage('package') {
 
 steps {
@@ -77,9 +46,32 @@ sh 'mvn package'
 }
 
 }
+  
+stage('install') {
+
+steps {
+
+sh 'mvn install'
+
+}
+
+}
+stage ('Test') {
+steps {
+sh 'cd /root/.jenkins/workspace/mmsonartest/ && touch test-results-unit.xml'
+sh 'mvn test'
+}
+post {
+always {
+junit '**/test-results-unit.xml'
+}
+}
+}
+  
 
 
-stage('Deployment') {
+
+stage('creating war file')
 
 steps {
 
