@@ -81,16 +81,6 @@ sh 'cp /root/.jenkins/workspace/mmsonartest/target/*.war /opt/tomcat/webapps'
 
 }
 
-stage('installing webapp') {
-
-steps {
-
-sh '/opt/tomcat/bin/startup.sh'
-
-}
-
-}
-
 
 }
 
