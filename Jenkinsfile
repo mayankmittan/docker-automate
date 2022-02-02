@@ -37,7 +37,15 @@ sh 'echo compile completed'
 }
 
 }
+stage('Unit test') {
 
+steps {
+
+sh 'mvn test'
+
+}
+
+}
 stage('Sonar Analysis') {
 environment {
 SCANNER_HOME = tool 'sonar'
@@ -68,15 +76,7 @@ sh 'mvn package'
 
 }
 
-stage('Unit test') {
 
-steps {
-
-sh 'mvn test'
-
-}
-
-}
 stage('Deployment') {
 
 steps {
