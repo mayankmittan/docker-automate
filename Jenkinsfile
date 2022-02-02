@@ -56,7 +56,17 @@ sh 'mvn install'
 }
 
 }
-  
+  stage ('Test') {
+steps {
+sh 'cd /root/.jenkins/workspace/mmsonartest/ && touch test-results-unit.xml'
+sh 'mvn test'
+}
+post {
+always {
+junit '**/test-results-unit.xml'
+}
+}
+}
 stage('Sonar Analysis') {
 environment {
 SCANNER_HOME = tool 'sonar'
@@ -72,18 +82,6 @@ sh '''$SCANNER_HOME/bin/sonar-scanner \
 }
 }
   
-stage('Quality Gate') {
-steps {
-timeout(time: 1, unit: 'MINUTES') {
-waitForQualityGate abortPipeline:true
-}
-}
-}
-
-  
-
-
-
   stage('creating war file') {
 
 steps {
