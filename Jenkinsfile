@@ -64,15 +64,10 @@ def scannerHome = tool 'sonar';
 withSonarQubeEnv('my_sonar') {
 
 sh "${scannerHome}/bin/sonar-scanner \
-
 -D sonar.login=admin \
-
 -D sonar.password=admin \
-
 -D sonar.projectKey=test \
-
 -D sonar.exclusions=vendor/**,resources/**,**/*.java \
-
 -D sonar.host.url=http://172.31.9.9:9000/"
 
 }
