@@ -71,7 +71,7 @@ junit '**/test-results-unit.xml'
 
 
 
-stage('creating war file')
+  stage('creating war file') {
 
 steps {
 
