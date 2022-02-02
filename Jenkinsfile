@@ -59,7 +59,7 @@ sh 'mvn install'
   
 stage('SonarQube analysis') {
 
-def scannerHome = tool 'sonar';
+def scannerHome = tool 'sonarQube';
 
 withSonarQubeEnv('my_sonar') {
 
