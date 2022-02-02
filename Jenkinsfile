@@ -57,22 +57,29 @@ sh 'mvn install'
 
 }
   
-stage('SonarQube analysis') {
-
-def scannerHome = tool 'sonarQube';
-
+stage('Sonar Analysis') {
+environment {
+SCANNER_HOME = tool 'sonar'
+PROJECT_NAME = "test"
+}
+steps {
 withSonarQubeEnv('my_sonar') {
-
-sh "${scannerHome}/bin/sonar-scanner \
--D sonar.login=admin \
--D sonar.password=admin \
--D sonar.projectKey=test \
--D sonar.exclusions=vendor/**,resources/**,**/*.java \
--D sonar.host.url=http://172.31.9.9:9000/"
-
+sh '''$SCANNER_HOME/bin/sonar-scanner \
+-Dsonar.java.binaries=build/classes/java/ \
+-Dsonar.projectKey=$PROJECT_NAME \
+-Dsonar.sources=.'''
+}
+}
+}
+  
+stage('Quality Gate') {
+steps {
+timeout(time: 1, unit: 'MINUTES') {
+waitForQualityGate abortPipeline:true
+}
+}
 }
 
-}
   
 
 
