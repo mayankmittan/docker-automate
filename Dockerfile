@@ -8,7 +8,7 @@ RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.58/bin/apache-tomcat-9.0.
 
 RUN tar -xzvf apache-tomcat-9.0.58.tar.gz -C /usr/local/
 
-ADD ./target/mywebapp.war /usr/local/apache-tomcat-9.0.58/webapps/
+ADD ./target/app.war /usr/local/apache-tomcat-9.0.58/webapps/
 
 EXPOSE 8080
 
